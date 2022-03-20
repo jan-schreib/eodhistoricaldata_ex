@@ -2,6 +2,7 @@ defmodule EodhistoricaldataEx do
   @fundamental_url "https://eodhistoricaldata.com/api/fundamentals/"
   @eod_url "https://eodhistoricaldata.com/api/eod/"
   @real_time_url "https://eodhistoricaldata.com/api/real-time/"
+  @exchange_symbol_list_url "https://eodhistoricaldata.com/api/exchange-symbol-list/"
 
   # Helpers
   defp construct_filter(list) do
@@ -20,7 +21,7 @@ defmodule EodhistoricaldataEx do
         {:error, :forbidden}
 
       {:ok, %HTTPoison.Response{status_code: 401}} ->
-        {:ok, :unauthenticated}
+        {:error, :unauthenticated}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
@@ -53,7 +54,7 @@ defmodule EodhistoricaldataEx do
       iex> EodhistoricaldataEx.fundamentals("apikey", "aapl", ["General"])
       {:ok, %{}}
 
-      iex> EodhistoricaldataEx.fundamentals("apikey", "aapl", ["General::Code"], ["Highlights"])
+      iex> EodhistoricaldataEx.fundamentals("apikey", "aapl", ["General::Code", "Highlights"])
       {:ok, %{}}
 
       iex> EodhistoricaldataEx.fundamentals("invalid", "aapl", ["General"])
@@ -76,7 +77,7 @@ defmodule EodhistoricaldataEx do
   Options can include `:from`,`:to`,`:period` and `:order`.
   `:from` and `:to` use the date format YYYY-MM-DD.
 
-   
+
   The option `:period` does accept the values "d" for daily, "w" for weeky and "m" for monthly.
   Order does accept "a" for ascending and "d" for descending order by date.
 
@@ -120,7 +121,7 @@ defmodule EodhistoricaldataEx do
       {:ok, %{}}
 
       iex> EodhistoricaldataEx.real_time("invalid", "aapl")
-      {:error, :forbidden}
+      {:error, :unauthenticated}
 
   """
   def real_time(api_key, symbol) do
@@ -140,7 +141,7 @@ defmodule EodhistoricaldataEx do
       {:ok, []}
 
       iex> EodhistoricaldataEx.real_time("invalid", ["aapl", "msft"])
-      {:error, :forbidden}
+      {:error, :unauthenticated}
 
   """
 
@@ -149,6 +150,30 @@ defmodule EodhistoricaldataEx do
       @real_time_url <>
         hd(symbols) <>
         "?api_token=" <> api_key <> "&fmt=json" <> "&s=" <> Enum.join(tl(symbols), ",")
+
+    get(url)
+  end
+
+  @doc """
+  Get list of tickers (Exchange Symbols)
+
+  Returns `{:ok, []` or `{:error, :e}`.
+
+  ## Examples
+
+      iex> EodhistoricaldataEx.real_time("apikey", "us")
+      {:ok, []}
+
+      iex> EodhistoricaldataEx.real_time("invalid", "us")
+      {:error, :unauthenticated}
+
+  """
+
+  def list_of_tickers(api_key, exchange_code) do
+    url =
+      @exchange_symbol_list_url <>
+        exchange_code <>
+        "?api_token=" <> api_key <> "&fmt=json"
 
     get(url)
   end
