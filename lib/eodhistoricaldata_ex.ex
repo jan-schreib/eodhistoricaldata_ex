@@ -3,6 +3,7 @@ defmodule EodhistoricaldataEx do
   @eod_url "https://eodhistoricaldata.com/api/eod/"
   @real_time_url "https://eodhistoricaldata.com/api/real-time/"
   @exchange_symbol_list_url "https://eodhistoricaldata.com/api/exchange-symbol-list/"
+  @news_url "https://eodhistoricaldata.com/api/news"
 
   # Helpers
   defp construct_filter(list) do
@@ -174,6 +175,14 @@ defmodule EodhistoricaldataEx do
       @exchange_symbol_list_url <>
         exchange_code <>
         "?api_token=" <> api_key <> "&fmt=json"
+
+    get(url)
+  end
+
+  def news(api_key, symbol, offset \\ "0", limit \\ "10") do
+    url =
+      @news_url <>
+        "?api_token=" <> api_key <> "&s=" <> symbol <> "&offset=" <> offset <> "&limit=" <> limit
 
     get(url)
   end
