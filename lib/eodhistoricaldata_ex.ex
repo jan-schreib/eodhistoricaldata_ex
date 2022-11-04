@@ -49,17 +49,17 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.fundamentals("apikey", "aapl")
+      iex> EodhistoricaldataEx.fundamentals("demo", "aapl")
       {:ok, %{}}
 
-      iex> EodhistoricaldataEx.fundamentals("apikey", "aapl", ["General"])
+      iex> EodhistoricaldataEx.fundamentals("demo", "aapl", ["General"])
       {:ok, %{}}
 
-      iex> EodhistoricaldataEx.fundamentals("apikey", "aapl", ["General::Code", "Highlights"])
+      iex> EodhistoricaldataEx.fundamentals("demo", "aapl", ["General::Code", "Highlights"])
       {:ok, %{}}
 
       iex> EodhistoricaldataEx.fundamentals("invalid", "aapl", ["General"])
-      {:error, :forbidden}
+      {:error, :unauthenticated}
 
   """
   def fundamentals(api_key, symbol, filter \\ []) when is_list(filter) do
@@ -87,14 +87,14 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.eod("apikey", "aapl")
+      iex> EodhistoricaldataEx.eod("demo", "aapl")
       {:ok, %{}}
 
-      iex> EodhistoricaldataEx.eod("apikey", "aapl", [from: "2000-01-01", to: "2001-01-01", period: "d", order: "a"])
+      iex> EodhistoricaldataEx.eod("demo", "aapl", [from: "2000-01-01", to: "2001-01-01", period: "d", order: "a"])
       {:ok, %{}}
 
       iex> EodhistoricaldataEx.eod("invalid", "aapl")
-      {:error, :forbidden}
+      {:error, :unauthenticated}
 
   """
   def eod(api_key, symbol, options \\ []) when is_list(options) do
@@ -118,7 +118,7 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.real_time("apikey", "aapl")
+      iex> EodhistoricaldataEx.real_time("demo", "aapl")
       {:ok, %{}}
 
       iex> EodhistoricaldataEx.real_time("invalid", "aapl")
@@ -138,7 +138,7 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.real_time("apikey", ["aapl", "msft"])
+      iex> EodhistoricaldataEx.real_time("demo", ["aapl", "msft"])
       {:ok, []}
 
       iex> EodhistoricaldataEx.real_time("invalid", ["aapl", "msft"])
@@ -162,7 +162,7 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.real_time("apikey", "us")
+      iex> EodhistoricaldataEx.real_time("demo", "us")
       {:ok, []}
 
       iex> EodhistoricaldataEx.real_time("invalid", "us")
