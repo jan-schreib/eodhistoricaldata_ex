@@ -1,4 +1,5 @@
 defmodule EodhistoricaldataEx.Web do
+  @moduledoc false
   def get(url) do
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->

@@ -1,4 +1,5 @@
 defmodule EodhistoricaldataEx.Eod do
+  @moduledoc false
   alias EodhistoricaldataEx.Web
 
   @eod_url "https://eodhistoricaldata.com/api/eod/"
@@ -8,8 +9,7 @@ defmodule EodhistoricaldataEx.Eod do
 
     Enum.map(keywords, fn x -> {x, Keyword.get(list, x)} end)
     |> Enum.filter(fn {_, v} -> v != nil end)
-    |> Enum.map(fn {k, v} -> Atom.to_string(k) <> "=" <> to_string(v) end)
-    |> Enum.join("&")
+    |> Enum.map_join("&", fn {k, v} -> Atom.to_string(k) <> "=" <> to_string(v) end)
   end
 
   @doc """
@@ -20,7 +20,7 @@ defmodule EodhistoricaldataEx.Eod do
   Options can include `:from`,`:to`,`:period` and `:order`.
   `:from` and `:to` use the date format YYYY-MM-DD.
 
-   
+
   The option `:period` does accept the values "d" for daily, "w" for weeky and "m" for monthly.
   Order does accept "a" for ascending and "d" for descending order by date.
 

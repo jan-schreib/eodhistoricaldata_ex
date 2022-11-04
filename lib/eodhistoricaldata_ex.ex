@@ -1,4 +1,5 @@
 defmodule EodhistoricaldataEx do
+  @moduledoc false
   @fundamental_url "https://eodhistoricaldata.com/api/fundamentals/"
   @eod_url "https://eodhistoricaldata.com/api/eod/"
   @real_time_url "https://eodhistoricaldata.com/api/real-time/"
@@ -34,8 +35,7 @@ defmodule EodhistoricaldataEx do
 
     Enum.map(keywords, fn x -> {x, Keyword.get(list, x)} end)
     |> Enum.filter(fn {_, v} -> v != nil end)
-    |> Enum.map(fn {k, v} -> Atom.to_string(k) <> "=" <> to_string(v) end)
-    |> Enum.join("&")
+    |> Enum.map_join("&", fn {k, v} -> Atom.to_string(k) <> "=" <> to_string(v) end)
   end
 
   @doc """
