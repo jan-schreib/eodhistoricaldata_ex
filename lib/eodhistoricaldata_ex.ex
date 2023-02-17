@@ -3,6 +3,7 @@ defmodule EodhistoricaldataEx do
   @fundamental_url "https://eodhistoricaldata.com/api/fundamentals/"
   @eod_url "https://eodhistoricaldata.com/api/eod/"
   @real_time_url "https://eodhistoricaldata.com/api/real-time/"
+  @exchange_list_url "https://eodhistoricaldata.com/api/exchanges-list/"
   @exchange_symbol_list_url "https://eodhistoricaldata.com/api/exchange-symbol-list/"
   @news_url "https://eodhistoricaldata.com/api/news"
 
@@ -162,10 +163,10 @@ defmodule EodhistoricaldataEx do
 
   ## Examples
 
-      iex> EodhistoricaldataEx.real_time("demo", "us")
+      iex> EodhistoricaldataEx.list_of_tickers("demo", "us")
       {:ok, []}
 
-      iex> EodhistoricaldataEx.real_time("invalid", "us")
+      iex> EodhistoricaldataEx.list_of_tickers("invalid", "us")
       {:error, :unauthenticated}
 
   """
@@ -183,6 +184,27 @@ defmodule EodhistoricaldataEx do
     url =
       @news_url <>
         "?api_token=" <> api_key <> "&s=" <> symbol <> "&offset=" <> offset <> "&limit=" <> limit
+
+    get(url)
+  end
+
+    @doc """
+  Get list of exchanges
+
+  Returns `{:ok, []` or `{:error, :e}`.
+
+  ## Examples
+
+      iex> EodhistoricaldataEx.list_of_exchanges"demo")
+      {:ok, []}
+
+      iex> EodhistoricaldataEx.list_of_exchanges("invalid")
+      {:error, :unauthenticated}
+
+  """
+
+  def list_of_exchanges(api_key) do
+    url = @exchange_list_url <> "?api_token=" <> api_key <> "&fmt=json"
 
     get(url)
   end
