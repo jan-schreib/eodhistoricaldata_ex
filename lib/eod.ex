@@ -1,6 +1,6 @@
 defmodule EodhistoricaldataEx.Eod do
   @moduledoc false
-  alias EodhistoricaldataEx.Web
+  alias EodhistoricaldataEx.Http
 
   @eod_url "https://eodhistoricaldata.com/api/eod/"
 
@@ -50,7 +50,7 @@ defmodule EodhistoricaldataEx.Eod do
         "&fmt=json&" <>
         opts
 
-    case Web.get(url) do
+    case Http.get(url) do
       {:ok, json} -> Jason.decode(json)
       {:error, e} -> {:error, e}
     end

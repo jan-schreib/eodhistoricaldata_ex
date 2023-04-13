@@ -1,4 +1,4 @@
-defmodule EodhistoricaldataEx.Web do
+defmodule EodhistoricaldataEx.Http do
   @moduledoc false
   def get(url) do
     case HTTPoison.get(url) do

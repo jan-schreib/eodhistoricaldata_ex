@@ -7,28 +7,11 @@ defmodule EodhistoricaldataEx do
   @exchange_symbol_list_url "https://eodhistoricaldata.com/api/exchange-symbol-list/"
   @news_url "https://eodhistoricaldata.com/api/news"
 
+  alias EodhistoricaldataEx.Http
+
   # Helpers
   defp construct_filter(list) do
     "&filter=" <> Enum.join(list, ",")
-  end
-
-  defp get(url) do
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        Jason.decode(body)
-
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, :notfound}
-
-      {:ok, %HTTPoison.Response{status_code: 403}} ->
-        {:error, :forbidden}
-
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
-        {:error, :unauthenticated}
-
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, reason}
-    end
   end
 
   defp construct_options(list) do
@@ -68,7 +51,7 @@ defmodule EodhistoricaldataEx do
       @fundamental_url <>
         symbol <> "?api_token=" <> api_key <> construct_filter(filter)
 
-    get(url)
+    Http.get(url)
   end
 
   @doc """
@@ -109,7 +92,7 @@ defmodule EodhistoricaldataEx do
         "&fmt=json&" <>
         opts
 
-    get(url)
+    Http.get(url)
   end
 
   @doc """
@@ -129,7 +112,7 @@ defmodule EodhistoricaldataEx do
   def real_time(api_key, symbol) do
     url = @real_time_url <> symbol <> "?api_token=" <> api_key <> "&fmt=json"
 
-    get(url)
+    Http.get(url)
   end
 
   @doc """
@@ -153,7 +136,7 @@ defmodule EodhistoricaldataEx do
         hd(symbols) <>
         "?api_token=" <> api_key <> "&fmt=json" <> "&s=" <> Enum.join(tl(symbols), ",")
 
-    get(url)
+    Http.get(url)
   end
 
   @doc """
@@ -177,7 +160,7 @@ defmodule EodhistoricaldataEx do
         exchange_code <>
         "?api_token=" <> api_key <> "&fmt=json"
 
-    get(url)
+    Http.get(url)
   end
 
   def news(api_key, symbol, offset \\ "0", limit \\ "10") do
@@ -185,7 +168,7 @@ defmodule EodhistoricaldataEx do
       @news_url <>
         "?api_token=" <> api_key <> "&s=" <> symbol <> "&offset=" <> offset <> "&limit=" <> limit
 
-    get(url)
+    Http.get(url)
   end
 
     @doc """
@@ -206,6 +189,6 @@ defmodule EodhistoricaldataEx do
   def list_of_exchanges(api_key) do
     url = @exchange_list_url <> "?api_token=" <> api_key <> "&fmt=json"
 
-    get(url)
+    Http.get(url)
   end
 end
